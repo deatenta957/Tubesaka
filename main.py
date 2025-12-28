@@ -19,6 +19,7 @@ def binary_search_iterative(arr, target):
 
     return low, steps, False
 
+
 # Binary Search Rekursif
 def binary_search_recursive(arr, target, low, high, steps=0):
     if low > high:
@@ -49,15 +50,13 @@ def main():
     print("Penelitian Binary Search pada Leaderboard Game")
 
     # Pilih ukuran leaderboard
-    n = input("Masukkan ukuran: ")
     try:
-        n = int(n)
+        n = int(input("Masukkan ukuran leaderboard: "))
+        if n <= 0:
+            print("Ukuran harus lebih besar dari 0.")
+            return
     except ValueError:
         print("Ukuran harus berupa angka.")
-        return
-
-    if n <= 0:
-        print("Ukuran harus lebih besar dari 0.")
         return
 
     # Pilih jenis data
@@ -91,18 +90,18 @@ def main():
         for _ in range(percobaan):
             start = time.perf_counter()
             idx_i, steps_i, found_i = binary_search_iterative(leaderboard, target)
-            iteratif_times.append(time.perf_counter() - start)
+            iteratif_times.append((time.perf_counter() - start) * 1_000_000)
 
             start = time.perf_counter()
             idx_r, steps_r, found_r = binary_search_recursive(
                 leaderboard, target, 0, len(leaderboard) - 1
             )
-            rekursif_times.append(time.perf_counter() - start)
+            rekursif_times.append((time.perf_counter() - start) * 1_000_000)
 
         avg_i = sum(iteratif_times) / percobaan
         avg_r = sum(rekursif_times) / percobaan
 
-        # Output Posisi
+        # Output posisi
         if found_i:
             print(f"\nSkor {target} ditemukan di peringkat {idx_i + 1}")
         else:
@@ -114,12 +113,12 @@ def main():
                 print(f"\nSkor berada di antara {leaderboard[idx_i-1]} dan {leaderboard[idx_i]}")
             print(f"Rank (posisi sisip): {idx_i + 1}")
 
-# Analisis Efisiensi
-        print("Analisis Efisiensi")
+        # Analisis Efisiensi
+        print("\nAnalisis Efisiensi")
         print(f"Langkah Iteratif  : {steps_i}")
         print(f"Langkah Rekursif  : {steps_r}")
-        print(f"Rata-rata waktu Iteratif : {avg_i:.10f} detik")
-        print(f"Rata-rata waktu Rekursif : {avg_r:.10f} detik")
+        print(f"Rata-rata waktu Iteratif : {avg_i:.3f} µs")
+        print(f"Rata-rata waktu Rekursif : {avg_r:.3f} µs")
 
         if avg_i < avg_r:
             print("=> Iteratif lebih efisien")
